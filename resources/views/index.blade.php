@@ -5,7 +5,7 @@
             <h1></h1>
 
             <h3>Registration</h3>
-            <form method="POST" action="/register">
+            <form method="POST" action="/register" name="Sign Up">
 
                 {!! csrf_field() !!}
 
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Add Note</button>
+                    <button name="Sign Up" type="submit" class="btn btn-primary" value="Sign Up">Sign Up</button>
                 </div>
             </form>
             @if(count($errors))
