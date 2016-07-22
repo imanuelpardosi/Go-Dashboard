@@ -2,8 +2,11 @@
 
 namespace App\Console;
 
+use App\Console\Commands\SendEmail;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
+use Psy\Command\Command;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +16,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // Commands\Inspire::class,
+        Commands\Inspire::class,
+        Commands\SendEmail::class,
     ];
 
     /**
@@ -24,7 +28,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('email:send')
+            ->cron('* * * * * *')->sendOutputTo(storage_path('logs/output.log'));
     }
 }

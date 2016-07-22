@@ -4,19 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Repositories\UserRepositories;
-use App\Repositories\EmailRepositories;
+use App\Repositories\UserRepository;
+use App\Repositories\EmailRepository;
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
 {
     protected $user_repository;
     protected $email_repository;
-
+    protected $user_id;
     public function __construct
     (
-        UserRepositories $userRepository,
-        EmailRepositories $emailRepository
+        UserRepository $userRepository,
+        EmailRepository $emailRepository
     )
     {
         $this->user_repository = $userRepository;
@@ -25,6 +25,8 @@ class UserController extends Controller
 
     public function index()
     {
+        echo $this->user_repository->countUserRegisteredToday();
+        
         return view('index');
     }
 
@@ -39,7 +41,7 @@ class UserController extends Controller
         $user = $request->all();
         $this->validate($request,[
             'name' => 'required|min:3',
-            'email' => 'required|email|unique:users|min:10',
+            'email' => 'required|email|unique:users',
             'phone' => 'required|min:10',
             'occupation' => 'required|min:10',
             'password' => 'required|min:6',
@@ -50,8 +52,8 @@ class UserController extends Controller
         if (!$result) {
             return Redirect::back()->withErrors("Registration Failed, Please Try Again.");
         } else {
-            $this->email_repository->sendEmailReminder($result);
-            return Redirect::action('UserController@dashboard', array('id' => $result->id));
+            $this->email_repository->sendEmailNotification($result);
+            return Redirect::action('UserController@dashboard', [$result->id]);
         }
     }
 

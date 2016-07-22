@@ -4,8 +4,9 @@ namespace App\Repositories;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use DB;
 
-class UserRepositories
+class UserRepository
 {
     public function findById($id)
     {
@@ -24,5 +25,14 @@ class UserRepositories
         $user->password = Hash::make($data['password']);
 
         return $user->save() ? $user : false;
+    }
+
+    public function countUserRegisteredToday()
+    {
+        $query = User::select(DB::raw('count(*) as user_count'))
+            ->whereRaw(('DATE(created_at) = curdate()'))
+            ->get();
+
+        return $query;
     }
 }
