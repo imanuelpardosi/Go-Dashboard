@@ -15,7 +15,6 @@ class UserRepositories
 
     public function register(array $data)
     {
-
         $user = new User();
 
         $user->name = $data['name'];
