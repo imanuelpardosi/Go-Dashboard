@@ -7,20 +7,29 @@ use App\Models\User;
 
 class UserTest extends TestCase
 {
-    public function testBasicExample()
+    public function testDisplaysRegistrationForm()
     {
         $this->visit('/')
-            ->see('Registration');
+            ->see('Registration')
+            ->dontSee('Welcome');
     }
 
     public function testNewUserRegistration()
     {
         $this->visit('/')
-            ->type('Taylor', 'name')
+            ->type('nuel', 'name')
             ->type('el@gmail.com', 'email')
             ->type('082267610077', 'phone')
-            ->type('Back-End', 'occupation')
+            ->type('back-end', 'occupation')
             ->type('pidel123', 'password')
             ->press('Sign Up');
+    }
+
+    public function testDatabase()
+    {
+        $user = factory(User::class)->make();
+        echo ($user);
+
+        // Use model in tests...
     }
 }
