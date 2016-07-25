@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laravel</title>
+    <title>Go | {{ $users->name}}</title>
 
     <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
 
@@ -38,10 +38,11 @@
 <body>
 <div class="container">
     <div class="content">
-        <div class="title">Your Dashboard</div>
+        <div class="title">Welcome {{ $users->name}}</div>
     </div>
     <div>
-        welcome {{ $users->name}}
+        <br/><br/>
+        - Life is really simple, but we insist on making it complicated.
     </div>
 </div>
 </body>

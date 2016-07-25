@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function index()
     {
-        echo $this->user_repository->countUserRegisteredToday();
+        //echo $this->user_repository->countUserRegisteredToday();
         
         return view('index');
     }
