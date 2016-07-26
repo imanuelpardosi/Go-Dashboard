@@ -46,7 +46,7 @@ class SendEmail extends Command
     {
         $user = $this->user_repository->countUserRegisteredToday();
 
-        $this->email_repository->sendEmailReport($user[0]->user_count);
+        $this->email_repository->sendDailyReport($user[0]->user_count);
         Log::info('Send email report success');
     }
 }

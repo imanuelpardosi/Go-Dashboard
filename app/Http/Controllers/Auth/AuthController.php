@@ -1,72 +1,47 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use Validator;
+use Illuminate\Routing\ResponseFactory;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
+use Validator;
+use Auth;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Hash;
+use App\Repositories\UserRepository;
+use App\Models\User;
 
 class AuthController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
+    private $responseFactory;
+    private $auth;
+    private $user_repository;
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
-    /**
-     * Where to redirect users after login / registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/';
-
-    /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(ResponseFactory $responseFactory, Guard $auth, UserRepository $userRepository)
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        $this->responseFactory = $responseFactory;
+        $this->auth=$auth;
+        $this->user_repository = $userRepository;
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+    public function login(Request $request)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-        ]);
+        $credentials = $request->only('email', 'password');
+
+        //dd($credentials);
+        //var_dump($this->auth->attempt($credentials));
+        //echo Hash::make("imanuel123");
+
+        if (\Auth::attempt($credentials)) {
+            $user = $this->user_repository->findByEmail($request->input('email'));
+            $response = [
+                'error' => false,
+                'message' => $user
+            ];
+            return response()->json($response, 200);
+        } else {
+            return response()->json(['error' => 'Login failed'], 401);
+        }
     }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
-    }
 }

@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Repositories\UserRepository;
 use App\Repositories\EmailRepository;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -30,8 +31,9 @@ class UserController extends Controller
         return view('index');
     }
 
-    public function dashboard($id)
+    public function dashboard()
     {
+        $id = Session::get('id');
         $users = $this->user_repository->findById($id);
         return view('dashboard', compact('users'));
     }
@@ -53,8 +55,8 @@ class UserController extends Controller
             return Redirect::back()->withErrors("Registration Failed, Please Try Again.");
         } else {
             $this->email_repository->sendEmailNotification($result);
-            return Redirect::action('UserController@dashboard', [$result->id]);
+            Session::set('id', $result->id);
+            return Redirect::action('UserController@dashboard');
         }
     }
-
 }
