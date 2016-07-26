@@ -14,6 +14,18 @@ class UserRepository
         return $query;
     }
 
+    public function findByEmail($email)
+    {
+        $query = User::where('email','=',$email)->first();
+        return $query;
+    }
+
+    public function findAll()
+    {
+        $query = User::orderBy('id', 'asc');
+        return $query->get();
+    }
+    
     public function register(array $data)
     {
         $user = new User();

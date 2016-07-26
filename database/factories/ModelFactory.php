@@ -17,6 +17,6 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'email' => $faker->safeEmail,
         'phone' => $faker->phoneNumber,
         'occupation' => $faker->jobTitle,
-        'password' => bcrypt(str_random(10))
+        'password' => 'go12345'
     ];
 });

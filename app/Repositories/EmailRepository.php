@@ -12,7 +12,7 @@ class EmailRepository
         });
     }
 
-    public function sendEmailReport($count)
+    public function sendDailyReport($count)
     {
         Mail::send('emails.report', ['user' => $count], function ($message) {
             $message->to('nuel.4r17@gmail.com', 'Go-Dashboard Admin')->from($this->getSenderEmail())->subject('Report of User');

@@ -11,8 +11,13 @@
 |
 */
 
+
+
 Route::get('/', 'UserController@index');
+Route::post('/register', 'UserController@store');
+Route::get('/dashboard', 'UserController@dashboard');
 
-Route::post('/register/', 'UserController@store');
-
-Route::get('/dashboard/{id}', 'UserController@dashboard');
+Route::post('api/v1/auth/login', ['uses' => 'Auth\AuthController@login']);
+Route::post('/api/v1/register', 'UserAPIController@create');
+Route::get('/api/v1/users', 'UserAPIController@getAllUsers');
+Route::get('/api/v1/user/{id}', 'UserAPIController@getUserById');
