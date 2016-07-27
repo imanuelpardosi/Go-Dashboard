@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Go-Registration</title>
+    <title>Go-Welcome</title>
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 col-md-offset-3">
-                    <h1></h1>
+
+                    <h3>Login</h3>
+                    <form method="POST"  action="/login" name="Sign Up">
+
+                        {!! csrf_field() !!}
+
+                        <div class="form-group">
+                            Email
+                            <input name="email" type="text" class="form-control" value="{{ old('email') }}">
+                        </div>
+
+                        <div class="form-group">
+                            Password
+                            <input name="password" type="password" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <button name="Login" type="submit" class="btn btn-primary" value="Login">Login</button>
+                        </div>
+                    </form>
+
+                    <hr/>
 
                     <h3>Registration</h3>
                     <form method="POST"  action="/register" name="Sign Up">
@@ -39,7 +60,7 @@
                         </div>
 
                         <div class="form-group">
-                            <button name="Sign Up" type="submit" class="btn btn-primary" value="Sign Up">Sign Up</button>
+                            <button name="Sign Up" type="submit" class="btn btn-danger" value="Sign Up">Sign Up</button>
                         </div>
                     </form>
                     @if(count($errors))
