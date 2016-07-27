@@ -1,4 +1,4 @@
-# Go Dahsboard
+# Go-Dashboard
 
 ## Instalation
 
