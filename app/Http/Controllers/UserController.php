@@ -8,12 +8,15 @@ use App\Repositories\UserRepository;
 use App\Repositories\EmailRepository;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Auth;
+use Illuminate\Contracts\Auth\Guard;
 
 class UserController extends Controller
 {
     protected $user_repository;
     protected $email_repository;
     protected $user_id;
+
     public function __construct
     (
         UserRepository $userRepository,
@@ -38,14 +41,27 @@ class UserController extends Controller
         return view('dashboard', compact('users'));
     }
 
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (\Auth::attempt($credentials)) {
+            $user = $this->user_repository->findByEmail($request->input('email'));
+            Session::set('id', $user->id);
+            return Redirect::action('UserController@dashboard');
+        } else {
+            return Redirect::back()->withErrors("Login Failed, Please Try Again.");
+        }
+    }
+
     public function store(Request $request)
     {
         $user = $request->all();
         $this->validate($request,[
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users',
-            'phone' => 'required|min:10',
-            'occupation' => 'required|min:10',
+            'phone' => 'required|min:5',
+            'occupation' => 'required|min:5',
             'password' => 'required|min:6',
         ]);
 
